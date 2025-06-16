@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis Results - Chest X-ray AI Classifier</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-icon">
+                <i class="fas fa-chart-line"></i>
+            </div>
+            <h1 class="header-title">Analysis Results</h1>
+            <p class="header-subtitle">AI-powered chest X-ray classification results</p>
+        </header>
+
+        <main class="main-content">
+            <!-- Results Summary -->
+            <div class="results-summary">
+                <div class="result-card prediction-card">
+                    <div class="result-icon">
+                        <i class="fas fa-diagnoses"></i>
+                    </div>
+                    <h3>Classification</h3>
+                    <p class="prediction-value">{{ prediction }}</p>
+                </div>
+                
+                <div class="result-card confidence-card">
+                    <div class="result-icon">
+                        <i class="fas fa-percentage"></i>
+                    </div>
+                    <h3>Confidence</h3>
+                    <p class="confidence-value">{{ confidence }}</p>
+                    <div class="confidence-bar">
+                        <!-- Optional: visualize bar if desired -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Image Comparison Section -->
+            <div class="comparison-section">
+                <h2 class="section-title">
+                    <i class="fas fa-images"></i>
+                    Image Analysis Comparison
+                </h2>
+                
+                <div class="image-comparison">
+                    <div class="image-container">
+                        <div class="image-header">
+                            <h3>
+                                <i class="fas fa-file-medical"></i>
+                                Original X-ray
+                            </h3>
+                            <p>Uploaded chest X-ray image</p>
+                        </div>
+                        <div class="image-wrapper">
+                            <img src="{{ url_for('static', filename='uploads/' + uploaded_image) }}" alt="Original X-ray" class="comparison-image">
+                            <div class="image-overlay">
+                                <span class="image-label">Original</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="comparison-divider">
+                        <div class="divider-line"></div>
+                        <div class="divider-icon">
+                            <i class="fas fa-arrows-alt-h"></i>
+                        </div>
+                        <div class="divider-line"></div>
+                    </div>
+
+                    <div class="image-container">
+                        <div class="image-header">
+                            <h3>
+                                <i class="fas fa-eye"></i>
+                                Grad-CAM Visualization
+                            </h3>
+                            <p>AI attention heatmap overlay</p>
+                        </div>
+                        <div class="image-wrapper">
+                            <img src="{{ url_for('static', filename='uploads/' + cam_image) }}" alt="Grad-CAM Visualization" class="comparison-image">
+                            <div class="image-overlay">
+                                <span class="image-label">Grad-CAM</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Explanation Section -->
+                <div class="explanation-card">
+                    <h3>
+                        <i class="fas fa-info-circle"></i>
+                        Understanding Grad-CAM
+                    </h3>
+                    <p>
+                        Grad-CAM (Gradient-weighted Class Activation Mapping) highlights the regions 
+                        in the X-ray that the AI model focused on when making its prediction. 
+                        Warmer colors (red/yellow) indicate areas of higher importance for the classification.
+                    </p>
+                    <div class="heatmap-legend">
+                        <span class="legend-label">Attention Level:</span>
+                        <div class="legend-bar">
+                            <span class="legend-low">Low</span>
+                            <div class="legend-gradient"></div>
+                            <span class="legend-high">High</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <a href="{{ url_for('index') }}" class="btn btn-primary">
+                    <i class="fas fa-plus"></i>
+                    Analyze Another Image
+                </a>
+                <button class="btn btn-secondary" onclick="window.print()">
+                    <i class="fas fa-print"></i>
+                    Print Results
+                </button>
+                <button class="btn btn-secondary" onclick="downloadResults()">
+                    <i class="fas fa-download"></i>
+                    Download Report
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function downloadResults() {
+            alert('Download functionality would be implemented here');
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const elements = document.querySelectorAll('.result-card, .image-container');
+            elements.forEach((el, index) => {
+                el.style.animationDelay = `${index * 0.1}s`;
+                el.classList.add('fade-in');
+            });
+        });
+    </script>
+</body>
+</html>

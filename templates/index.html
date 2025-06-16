@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chest X-ray AI Classifier</title>
+    
+    <!-- Corrected CSS path -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+    
+    <!-- Font Awesome for icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-icon">
+                <i class="fas fa-x-ray"></i>
+            </div>
+            <h1 class="header-title">Chest X-ray AI Classifier</h1>
+            <p class="header-subtitle">Upload your chest X-ray image for AI-powered analysis</p>
+        </header>
+
+        <main class="main-content">
+            <div class="upload-card">
+                <div class="upload-icon">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                </div>
+                
+                <form method="POST" action="/predict" enctype="multipart/form-data" class="upload-form">
+                    <div class="file-input-wrapper">
+                        <input type="file" name="image" id="image" accept="image/*" required class="file-input">
+                        <label for="image" class="file-label">
+                            <span class="file-label-text">Choose X-ray Image</span>
+                            <span class="file-label-subtext">PNG, JPG, JPEG up to 10MB</span>
+                        </label>
+                    </div>
+                    
+                    <div class="preview-container" id="preview-container" style="display: none;">
+                        <img id="preview-image" src="/static/img/placeholder.svg" alt="Preview" class="preview-image">
+                        <p class="preview-text">Image ready for analysis</p>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-brain"></i>
+                        Analyze X-ray
+                    </button>
+                </form>
+            </div>
+
+            <div class="info-section">
+                <h3>How it works</h3>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <i class="fas fa-upload"></i>
+                        <h4>Upload</h4>
+                        <p>Select your chest X-ray image</p>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-cogs"></i>
+                        <h4>Analyze</h4>
+                        <p>AI processes the image</p>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-chart-line"></i>
+                        <h4>Results</h4>
+                        <p>Get classification and visualization</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('image');
+        const previewContainer = document.getElementById('preview-container');
+        const previewImage = document.getElementById('preview-image');
+        const fileLabel = document.querySelector('.file-label-text');
+
+        fileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImage.src = e.target.result;
+                    previewContainer.style.display = 'block';
+                    fileLabel.textContent = file.name;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+</body>
+</html>
